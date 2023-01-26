@@ -50,6 +50,8 @@ class Obstacle(pygame.sprite.Sprite):
 		if type == 'fly':
 			fly_1 = pygame.image.load('graphics/fly/fly1.png').convert_alpha()
 			fly_2 = pygame.image.load('graphics/fly/fly2.png').convert_alpha()
+			# fly_1 = pygame.transform.rotozoom(fly_1, 0, 0.5)
+			# fly_2 = pygame.transform.rotozoom(fly_2, 0, 0.5)
 			self.frames = [fly_1,fly_2]
 			y_pos = 210
 		else:
@@ -63,9 +65,13 @@ class Obstacle(pygame.sprite.Sprite):
 		self.rect = self.image.get_rect(midbottom = (randint(900,1100),y_pos))
 
 	def animation_state(self):
+		if self.rect.bottom == 210:
+			self.animation_index += 0.5
 		self.animation_index += 0.1 
 		if self.animation_index >= len(self.frames): self.animation_index = 0
 		self.image = self.frames[int(self.animation_index)]
+		if self.rect.bottom == 210: # daca obstacolul este de tipul 'fly', scaleaza la 0.7
+			self.image = pygame.transform.rotozoom(self.image, 0, 0.7)
 
 	def update(self):
 		self.animation_state()
